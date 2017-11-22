@@ -265,8 +265,11 @@ class Output(OutputAbs):
                 if i.id == MIPS_INS_LUI:
                     self._operand(i, 0)
                     self._add(" = ")
-                    self._operand(i, 1)
-                    self._add(" << 16")
+                    if str(i.operands[1].value.reg).isdigit:
+                        self._add(" 0x%x" % (i.operands[1].value.reg << 16))
+                    else:
+                        self._operand(i, 1)
+                        self._add(" << 16")
 
                 elif i.id == MIPS_INS_MOVE:
                     self._operand(i, 0)
