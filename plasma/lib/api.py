@@ -677,7 +677,12 @@ class Api():
         if ty == MEM_ASCII:
             return "asc_%x" % ad
         if MEM_WOFFSET <= ty <= MEM_QOFFSET:
-            return "off_%x" % ad
+            s = self.__binary.get_section(ad)
+            off = s.read_int(ad, 4)
+            if off in self.__db.reverse_symbols:
+                return "%s_ptr" % self.__db.reverse_symbols.get(off)
+            else:
+                return "off_%x" % ad
 
         return None
 
